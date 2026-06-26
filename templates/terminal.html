@@ -1,0 +1,23 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}
+Terminal
+{% endblock %}
+
+{% block content %}
+<h2 class="title-page">Terminal</h2>
+<div class="terminal-toolbar">
+    <button id="btnConnect">Connect</button>
+    <button id="btnDisconnect" disabled>Disconnect</button>
+    <span id="terminalStatus">Disconnected</span>
+</div>
+<div id="terminal"></div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm/css/xterm.css">
+<script src="https://cdn.jsdelivr.net/npm/xterm/lib/xterm.js"></script>
+<script src="/static/js/terminal.js"></script>
+
+{% endblock %}

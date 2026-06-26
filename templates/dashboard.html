@@ -1,0 +1,46 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block content %}
+
+<div id="metrics">
+    <h2 class="title-page">System Monitoring</h2>
+    <div style="display: grid; gap: 20px; grid-template-columns: repeat(3, 1fr);">
+        <div class="card">
+            <h3>CPU Usage</h3>
+            <canvas class="chart-container" id="cpuChart"></canvas>
+        </div>
+        <div class="card">
+            <h3>Memory Usage</h3>
+            <canvas class="chart-container" id="memoryChart"></canvas>
+        </div>
+        <div class="card">
+            <h3>Network Traffic</h3>
+            <canvas class="chart-container" id="networkChart"></canvas>
+        </div>
+    </div>
+    <div class="card-row">
+        <div class="card small">
+            <h3>Storage</h3>
+            <div id="storageInfo">
+                Loading...
+            </div>
+        </div>
+        <div class="card small">
+            <h3>Uptime</h3>
+            <div id="uptimeInfo">
+                Loading...
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="/static/js/dashboard.js"></script>
+
+{% endblock %}

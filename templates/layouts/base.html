@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        fx-directory server |
+        {% block title %}
+        {% endblock %}
+    </title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body>
+    {% include 'partials/navbar.html' %}
+    <div class="container">
+        {% include 'partials/sidebar.html' %}
+        <div class="content">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+    <script src="/static/js/auth.js"></script>
+    {% block scripts %}
+    {% endblock %}
+</body>
+
+</html>
