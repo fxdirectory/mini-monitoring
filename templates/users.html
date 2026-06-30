@@ -6,12 +6,86 @@ Users
 
 {% block content %}
 
-<h2>Users & Groups</h2>
+<h2 class="title-page">Users & Groups</h2>
 
-<div id="users">
+<div class="tabs">
+    <button class="tab-button active" data-tab="users">Users</button>
+    <button class="tab-button" data-tab="groups">Groups</button>
+</div>
 
-    Loading...
+<div class="toolbar">
+    <input type="text" id="searchInput" placeholder="Search...">
+    <button id="btnAdd" onclick="openUserModal()">Add</button>
+</div>
+
+<div id="usersTab" class="tab-content">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>UID</th>
+                <th>Username</th>
+                <th>GID</th>
+                <th>Home</th>
+                <th>Groups</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="usersTable"></tbody>
+    </table>
 
 </div>
+<div id="groupsTab" class="tab-content" style="display:none;">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>GID</th>
+                <th>Group</th>
+                <th>Members</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="groupsTable"></tbody>
+    </table>
+</div>
+
+<!-- User Modal -->
+<div id="userModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="modalTitle">Add User</h3>
+        </div>
+        <div class="modal-body">
+            <label>Username</label>
+            <input type="text" id="username">
+            <label>Password</label>
+            <input type="password" id="password">
+            <small id="passwordHelp">Leave blank to keep current password.</small>
+            <label>Home Directory</label>
+            <input type="text" id="home">
+            <label>Shell</label>
+            <select id="shell">
+                <option>/bin/bash</option>
+                <option>/bin/sh</option>
+                <option>/bin/zsh</option>
+            </select>
+            <label>Primary Group</label>
+            <select id="primaryGroup">
+            </select>
+            <label>Additional Groups</label>
+            <div id="groupCheckboxes">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button onclick="closeUserModal()">Cancel</button>
+            <button id="saveUserBtn">Save</button>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script src="/static/js/users.js"></script>
 
 {% endblock %}

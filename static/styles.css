@@ -1,0 +1,324 @@
+html,
+body {
+	height: 100%;
+	margin: 0;
+}
+
+body {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+	font-family: verdana, sans-serif;
+	font-size: large;
+	background-color: #3b6ea5;
+}
+
+.window {
+	display: flex;
+	flex-direction: column;
+	margin: 30px 20px;
+	border-top: 3px solid #fff;
+	border-left: 3px solid #fff;
+	border-bottom: 3px solid #999;
+	border-right: 3px solid #999;
+	box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.7), 0 8px 16px rgba(0, 0, 0, 0.08);
+	background: #f9fbff;
+}
+
+.header {
+	background: linear-gradient(to left, #a6c9ef, #07276a);
+	color: #fff;
+	height: var(--header-height);
+	padding: 5px 7px;
+	font-weight: 700;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 10px;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.header-title {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.window-controls {
+	display: flex;
+	align-items: center;
+	gap: 2px;
+}
+
+.window-controls .btn {
+	position: relative;
+	width: 18px;
+	height: 18px;
+	cursor: pointer;
+}
+
+.window-controls .btn:hover {
+	filter: brightness(1.08);
+}
+
+.window-controls .btn::before {
+	content: "";
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	width: 8px;
+	height: 2px;
+	background: #111;
+}
+
+.window-controls .btn.maximize::before {
+	width: 8px;
+	height: 8px;
+	border: 1px solid #111;
+	background: transparent;
+}
+
+
+.window-controls .btn.close::before,
+.window-controls .btn.close::after {
+	content: "";
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	width: 8px;
+	height: 2px;
+	background: #111;
+}
+
+.window-controls .btn.close::before {
+	transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.window-controls .btn.close::after {
+	transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.header img {
+	width: 20px;
+	height: 20px;
+	display: block;
+}
+
+.header strong {
+	color: #edffff;
+	font-size: 0.8rem;
+}
+
+.menu {
+	background: #d4d0c7;
+	padding: 3px 5px;
+	align-items: center;
+	gap: 3px;
+}
+
+.menu a {
+	text-decoration: none;
+	color: #111;
+	padding: 6px 8px;
+	font-size: 0.8rem;
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+}
+
+.menu img {
+	width: 15px;
+	height: 15px;
+	display: block;
+}
+
+.menu span {
+	line-height: 1;
+}
+
+.menu a:hover {
+	background: rgba(0, 0, 0, 0.04);
+}
+
+
+.layout {
+	display: flex;
+	width: 100%;
+	flex: 1;
+	gap:3px;
+	/* allow layout to grow so sidebar can stretch full height */
+}
+
+.side-menu {
+	background: #edffff;
+	padding: 0 5px;
+	width: 15%;
+	vertical-align: top;
+	height: 100%;
+	/* default - overridden on wider screens for sticky behaviour */
+}
+
+.category-menu {
+	padding: 0 5px;
+	display: block;
+}
+
+.title-menu-side {
+	font-size: 0.8rem;
+	font-weight: semi-bold;
+	display: block;
+	padding-top: 5px;
+	padding-bottom: 2px;
+}
+
+.list-menu-side {
+	font-size: 0.7rem;
+	display: block;
+	padding-bottom: 2px;
+	padding-top: 2px;
+	color: #111;
+}
+
+.content {
+	background:#edffff;
+	padding: 10px;
+	width: 85%;
+	vertical-align: top;
+	display: flex;
+	flex-direction: column;
+	/* allow footer to stick to bottom when content is short */
+}
+
+.content .footer {
+	margin-top: auto;
+	/* push footer to bottom when there's extra space */
+}
+
+.left-menu {
+	padding: 5px;
+	width: 20%;
+}
+
+.text-small {
+	font-size: 0.8rem;
+}
+
+.border-default {
+	border-top: 1px solid #fff;
+	border-left: 1px solid #fff;
+	border-bottom: 1px solid #999;
+	border-right: 1px solid #999;
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8),
+		0 2px 4px rgba(0, 0, 0, 0.12);
+}
+
+.border-default-reverse {
+	border-top: 1px solid #999;
+	border-left: 1px solid #999;
+	border-bottom: 1px solid #fff;
+	border-right: 1px solid #fff;
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8),
+		0 2px 4px rgba(0, 0, 0, 0.12);
+}
+
+.active-menu {
+	border-top: 2px solid #555;
+	border-left: 2px solid #555;
+	border-bottom: 2px solid #fff;
+	border-right: 2px solid #fff;
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8),
+		0 2px 4px rgba(0, 0, 0, 0.12);
+}
+
+.btn-menu {
+	border-top: 2px solid #fff;
+	border-left: 2px solid #fff;
+	border-bottom: 2px solid #555;
+	border-right: 2px solid #555;
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8),
+		0 2px 4px rgba(0, 0, 0, 0.12);
+}
+
+
+.border-content {
+	border: 1px solid #999;
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8),
+		0 2px 4px rgba(0, 0, 0, 0.12);
+}
+
+.footer {
+	padding: 4px 10px;
+	text-align: right;
+	background: #d4d0c7;
+	font-size: 0.6rem; !important;
+}
+
+/* Responsive adjustments */
+/* Desktop: make header and menu fixed and side-menu sticky */
+@media (min-width: 769px) {
+
+	.header {
+		height: var(--header-height);
+		padding-left: 10px;
+		padding-right: 5px;
+		z-index: 1000;
+	}
+
+	.menu {
+		height: var(--menu-height);
+		display: flex;
+		align-items: center;
+		z-index: 999;
+		padding-left: 5px;
+	}
+
+	/* Make side-menu stick beneath the fixed header/menu and scroll independently if content long */
+	.side-menu {
+		height: calc(100vh - (var(--header-height) + var(--menu-height) + 20px));
+		overflow: auto;
+	}
+
+	/* Ensure layout content width accounts for side-menu width */
+	.content {
+		width: calc(100% - 15%);
+	}
+}
+
+@media (max-width: 768px) {
+	.layout {
+		flex-direction: column;
+	}
+
+	.side-menu {
+		width: 100%;
+		margin-bottom: 8px;
+	}
+
+	.content {
+		width: 100%;
+	}
+
+	.menu {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px;
+	}
+
+	.menu a {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+	}
+
+	img {
+		max-width: 100%;
+		height: auto;
+	}
+
+	.header img {
+		width: 28px;
+		height: 28px;
+	}
+}

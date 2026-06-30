@@ -217,5 +217,30 @@ async function loadMetrics() {
         ${Math.floor(data.uptime.seconds / 86400)} Days`;
 }
 
+async function loadHardware(){
+    const response = await fetch("/api/hardware", {
+        headers: {
+            Authorization:
+                "Bearer " + token
+        }
+    }
+    );
+
+    if (response.status === 401) {
+        localStorage.clear();
+        window.location = "/";
+    }
+
+    const data = await response.json();
+    
+    console.log(data);
+
+    document.getElementById("cpu-info").innerHTML = `
+    <label>Model : </label><br>
+    <label>Cores : </label>${data.cpu.cores} Cores<br>
+    <label>Threads : </label>${data.cpu.threads} Threads`;
+}
+
 loadMetrics();
+loadHardware();
 setInterval(loadMetrics, 2000);
