@@ -71,12 +71,11 @@ async function loadUsers(keyword=""){
                 <tr>
                     <td>${user.uid}</td>
                     <td>${user.username}</td>
-                    <td>${user.gid}</td>
                     <td>${user.home}</td>
                     <td title="${user.groups.join(", ")}">${groups}</td>
                     <td>
-                        <button onclick="editUser('${user.username}')"> Edit</button>
-                        <button onclick="deleteUser('${user.username}')"> Delete</button>
+                        <button class="action-btn" onclick="editUser('${user.username}')"> Edit</button>
+                        <button class="action-btn" onclick="deleteUser('${user.username}')"> Delete</button>
                     </td>
                 </tr>`;
         });
@@ -134,8 +133,8 @@ async function loadGroups(keyword=""){
                     <td>${group.name}</td>
                     <td title="${group.members.join(", ")}">${members}</td>
                     <td>
-                        <button onclick="editGroup('${group.name}')">Edit</button>
-                        <button onclick="deleteGroup('${group.name}')">Delete</button>
+                        <button class="action-btn" onclick="editGroup('${group.name}')">Edit</button>
+                        <button class="action-btn" onclick="deleteGroup('${group.name}')">Delete</button>
                     </td>
                 </tr>`;
         });
@@ -192,7 +191,10 @@ function renderCheckboxes(selected){
     groupsCache.forEach(group=>{
         const checked = selected.includes(group.name) ? "checked" : "";
         container.innerHTML+=`
-            <label><input type="checkbox" value="${group.name}" ${checked}>${group.name}</label>`;
+            <div style="display:flex; width:auto; gap:2px;">
+            <input type="checkbox" style="width:auto;" value="${group.name}" ${checked}>
+            <label>${group.name}</label>
+            </div>`;
     });
 }
 
@@ -228,3 +230,7 @@ document.querySelectorAll("#groupCheckboxes input:checked")
 document.addEventListener("DOMContentLoaded",() => {
     loadData();
 });
+
+function addUser(){
+    
+}

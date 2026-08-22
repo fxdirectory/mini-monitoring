@@ -15,7 +15,9 @@ Users
 
 <div class="toolbar">
     <input type="text" id="searchInput" placeholder="Search...">
-    <button id="btnAdd" onclick="openUserModal()">Add</button>
+    <div>
+        <button id="btnAdd" onclick="openUserModal()">Add</button>
+    </div>
 </div>
 
 <div id="usersTab" class="tab-content">
@@ -24,7 +26,6 @@ Users
             <tr>
                 <th>UID</th>
                 <th>Username</th>
-                <th>GID</th>
                 <th>Home</th>
                 <th>Groups</th>
                 <th>Action</th>
@@ -50,36 +51,52 @@ Users
 
 <!-- User Modal -->
 <div id="userModal" class="modal">
-    <div class="modal-content">
+    <div class="modal-content border-default">
         <div class="modal-header">
-            <h3 id="modalTitle">Add User</h3>
+            <h3 id="modalTitle"></h3>
+            <button class="modal-close border-default" onclick="closeUserModal()">&times;</button>
         </div>
         <div class="modal-body">
-            <label>Username</label>
-            <input type="text" id="username">
-            <label>Password</label>
-            <input type="password" id="password">
-            <small id="passwordHelp">Leave blank to keep current password.</small>
-            <label>Home Directory</label>
-            <input type="text" id="home">
-            <label>Shell</label>
-            <select id="shell">
-                <option>/bin/bash</option>
-                <option>/bin/sh</option>
-                <option>/bin/zsh</option>
-            </select>
+            <div class="two-column">
+                <div class="input-group">
+                    <label>Username</label>
+                    <input type="text" id="username">
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" id="password">
+                    <small id="passwordHelp">Leave blank to keep current password.</small>
+                </div>
+            </div>
+
+            <div class="two-column">
+                <div class="input-group">
+                    <label>Home Directory</label>
+                    <input type="text" id="home">
+                </div>
+                <div class="input-group">
+                    <label>Shell</label>
+                    <select id="shell">
+                        <option>/bin/bash</option>
+                        <option>/bin/sh</option>
+                        <option>/bin/zsh</option>
+                    </select>
+                </div>
+            </div>
+
             <label>Primary Group</label>
             <select id="primaryGroup">
             </select>
+
             <label>Additional Groups</label>
-            <div id="groupCheckboxes">
+            <div id="groupCheckboxes"></div>
+            <div class="modal-footer">
+                <button onclick="closeUserModal()">Cancel</button>
+                <button id="saveUserBtn">Save</button>
             </div>
         </div>
-        <div class="modal-footer">
-            <button onclick="closeUserModal()">Cancel</button>
-            <button id="saveUserBtn">Save</button>
-        </div>
     </div>
+</div>
 </div>
 
 {% endblock %}
