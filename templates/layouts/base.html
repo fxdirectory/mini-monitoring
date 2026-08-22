@@ -14,12 +14,14 @@
 </head>
 
 <body>
-    {% include 'partials/navbar.html' %}
-    <div class="container">
-        {% include 'partials/sidebar.html' %}
-        <div class="content">
-            {% block content %}
-            {% endblock %}
+    <div class="window">
+        {% include 'partials/navbar.html' %}
+        {% include 'partials/menu.html' %}
+        <div class="layout border-default-reverse">
+            <div class="content">
+                {% block content %}
+                {% endblock %}
+            </div>
         </div>
     </div>
     <script src="/static/js/auth.js"></script>

@@ -1,0 +1,18 @@
+<div class="menu border-default">
+    <a href="/dashboard" class="{{ 'active-menu' if request.path == '/dashboard' else 'btn-menu' }}">
+        <img src="static/icons/Monitor.ico" alt="icon-home" />
+        <span>Dashboard</span>
+    </a>
+    <a href="/task" class="{{ 'active-menu' if request.path == '/task' else 'btn-menu' }}">
+        <img src="static/icons/library.png" alt="icon-library">
+        <span>Services</span>
+    </a>
+    <a href="/users" class="{{ 'active-menu' if request.path == '/users' else 'btn-menu' }}">
+        <img src="static/icons/users.ico" alt="icon-project">
+        <span>Users & Groups</span>
+    </a>
+    <a href="/terminal" class="{{ 'active-menu' if request.path == '/terminal' else 'btn-menu' }}">
+        <img src="static/icons/cmd.png" alt="icon-tools">
+        <span>Terminal</span>
+    </a>
+</div>

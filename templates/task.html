@@ -1,0 +1,83 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}
+Users
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    
+    <div>
+        <h2 class="title-page">Services</h2>
+    </div>
+
+    <button
+        id="refreshBtn"
+        class="btn">
+        Refresh
+    </button>
+
+</div>
+
+<div class="service-toolbar">
+
+    <input
+        type="text"
+        id="searchInput"
+        placeholder="Search service..."
+    >
+
+</div>
+
+<div class="table-container">
+
+    <table class="service-table">
+
+        <thead>
+
+            <tr>
+
+                <th>Service</th>
+
+                <th>Status</th>
+
+                <th>Enabled</th>
+
+                <th>Actions</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody id="servicesTable">
+
+            <tr>
+                <td colspan="4">
+                    Loading...
+                </td>
+            </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<div
+    id="pagination"
+    class="pagination">
+</div>
+
+<div
+    id="message"
+    class="message">
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script src="/static/js/task.js"></script>
+
+{% endblock %}

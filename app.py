@@ -10,6 +10,7 @@ from api.metrics import metrics_bp
 from api.hardware import hardware_bp
 from api.users import users_bp
 from api.terminal import terminal_bp
+from api.task import services_bp
 
 from flask_socketio import SocketIO
 from flask import render_template
@@ -30,6 +31,7 @@ def create_app():
     app.register_blueprint(users_bp)
     app.register_blueprint(terminal_bp)
     app.register_blueprint(health_bp)
+    app.register_blueprint(services_bp)
 
     return app
 
@@ -57,9 +59,9 @@ def login_page():
 def dashboard_page():
     return render_template("dashboard.html")
 
-@app.route("/hardware")
-def hardware_page():
-    return render_template("hardware.html")
+@app.route("/task")
+def task_page():
+    return render_template("task.html")
 
 @app.route("/users")
 def users_page():
