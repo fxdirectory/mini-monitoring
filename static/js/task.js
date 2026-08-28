@@ -1,44 +1,28 @@
 checkAuth();
 
-const servicesTable =
-    document.getElementById("servicesTable");
-
-const searchInput =
-    document.getElementById("searchInput");
-
-const refreshBtn =
-    document.getElementById("refreshBtn");
-
-const pagination =
-    document.getElementById("pagination");
-
-const message =
-    document.getElementById("message");
-
+const servicesTable = document.getElementById("servicesTable");
+const searchInput = document.getElementById("searchInput");
+const statusFilter = document.getElementById("statusFilter");
+const refreshBtn = document.getElementById("refreshBtn");
+const pagination = document.getElementById("pagination");
+const message = document.getElementById("message");
 
 let services = [];
-
 let currentPage = 1;
-
 const itemsPerPage = 10;
-
 
 // ======================================================
 // LOAD SERVICES
 // ======================================================
 
 async function loadServices() {
-
     servicesTable.innerHTML = `
         <tr>
-            <td colspan="4">
-                Loading...
-            </td>
+            <td colspan="4">Loading...</td>
         </tr>
     `;
 
     try {
-
         const response = await fetch(
             "/api/services",
             {
@@ -50,45 +34,29 @@ async function loadServices() {
         );
 
         if (response.status === 401) {
-
             localStorage.clear();
-
             window.location = "/";
-
             return;
         }
 
         if (!response.ok) {
-
             throw new Error(
                 "Failed to load services"
             );
-
         }
 
-        const result =
-            await response.json();
-
+        const result = await response.json();
         services = result.data || [];
-
         currentPage = 1;
-
         render();
-
     } catch (error) {
-
         console.error(error);
-
         servicesTable.innerHTML = `
             <tr>
-                <td colspan="4">
-                    Failed to load services.
-                </td>
+                <td colspan="4"> Failed to load services.</td>
             </tr>
         `;
-
     }
-
 }
 
 
@@ -97,25 +65,29 @@ async function loadServices() {
 // ======================================================
 
 function getFilteredServices() {
+        const keyword = searchInput.value.trim().toLowerCase();
+        const status = statusFilter.value;
 
-    const keyword =
-        searchInput.value
-        .trim()
-        .toLowerCase();
+        return services.filter(service => {
+            // ==========================================
+            // STATUS FILTER
+            // ==========================================
+            if (
+                status !== "all" &&
+                service.status !== status
+            ) {
+                return false;
+            }
 
-    if (!keyword) {
+            // ==========================================
+            // SEARCH FILTER
+            // ==========================================
 
-        return services;
-
-    }
-
-    return services.filter(service =>
-
-        service.name
-            .toLowerCase()
-            .includes(keyword)
-
-    );
+            if (!keyword) {
+                return true;
+            }
+            return service.name.toLowerCase().includes(keyword);
+        });
 
 }
 
@@ -125,39 +97,18 @@ function getFilteredServices() {
 // ======================================================
 
 function render() {
+    const filtered =getFilteredServices();
 
-    const filtered =
-        getFilteredServices();
-
-    const totalPages =
-        Math.ceil(
-            filtered.length /
-            itemsPerPage
-        );
-
-    if (
-        currentPage > totalPages &&
-        totalPages > 0
-    ) {
-
+    const totalPages =Math.ceil(filtered.length /itemsPerPage);
+    if (currentPage > totalPages && totalPages > 0) {
         currentPage = totalPages;
-
     }
 
-    const start =
-        (currentPage - 1) *
-        itemsPerPage;
-
-    const end =
-        start + itemsPerPage;
-
-    const pageItems =
-        filtered.slice(start, end);
-
+    const start = (currentPage - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    const pageItems = filtered.slice(start, end);
     renderTable(pageItems);
-
     renderPagination(totalPages);
-
 }
 
 
@@ -166,95 +117,40 @@ function render() {
 // ======================================================
 
 function renderTable(items) {
-
     if (items.length === 0) {
-
         servicesTable.innerHTML = `
             <tr>
-                <td colspan="4">
-                    No services found.
-                </td>
+                <td colspan="4">No services found.</td>
             </tr>
         `;
-
         return;
-
     }
 
     servicesTable.innerHTML = "";
 
     items.forEach(service => {
-
-        const row =
-            document.createElement("tr");
-
-        const status =
-            service.status;
-
+        const row = document.createElement("tr");
+        const status = service.status;
         let actions = "";
-
         if (status === "running") {
-
             actions = `
-                <button
-                    onclick="restartService('${escapeHtml(service.name)}')">
-                    Restart
-                </button>
-
-                <button
-                    onclick="stopService('${escapeHtml(service.name)}')">
-                    Stop
-                </button>
+                <button onclick="restartService('${escapeHtml(service.name)}')">Restart</button>
+                <button onclick="stopService('${escapeHtml(service.name)}')">Stop</button>
             `;
-
         } else {
-
-            actions = `
-                <button
-                    onclick="startService('${escapeHtml(service.name)}')">
-                    Start
-                </button>
-            `;
+            actions = `<button onclick="startService('${escapeHtml(service.name)}')">Start</button>`;
 
         }
 
         row.innerHTML = `
-
-            <td>
-                ${escapeHtml(service.name)}
+            <td>${escapeHtml(service.name)}</td>
+            <td><span class="status ${escapeHtml(status)}">${escapeHtml(status)}</span></td>
+            <td>${escapeHtml(service.enabled)}</td>
+            <td><div class="service-action">${actions}</div>
             </td>
-
-            <td>
-
-                <span
-                    class="status ${escapeHtml(status)}">
-
-                    ${escapeHtml(status)}
-
-                </span>
-
-            </td>
-
-            <td>
-                ${escapeHtml(service.enabled)}
-            </td>
-
-            <td>
-
-                <div class="service-action">
-
-                    ${actions}
-
-                </div>
-
-            </td>
-
         `;
-
         servicesTable.appendChild(row);
-
     });
-
 }
 
 
@@ -263,62 +159,33 @@ function renderTable(items) {
 // ======================================================
 
 function renderPagination(totalPages) {
-
     pagination.innerHTML = "";
-
     if (totalPages <= 1) {
-
         return;
-
     }
-
-    const previous =
-        document.createElement("button");
-
+    const previous = document.createElement("button");
     previous.textContent = "‹";
+    previous.disabled = currentPage === 1;
 
-    previous.disabled =
-        currentPage === 1;
-
-    previous.addEventListener(
-        "click",
-        () => {
-
+    previous.addEventListener("click",() => {
             currentPage--;
-
             render();
-
         }
     );
 
     pagination.appendChild(previous);
 
-
-    for (
-        let page = 1;
-        page <= totalPages;
-        page++
-    ) {
-
-        const button =
-            document.createElement("button");
-
+    for (let page = 1; page <= totalPages; page++) {
+        const button = document.createElement("button");
         button.textContent = page;
 
         if (page === currentPage) {
-
             button.classList.add("active");
-
         }
 
-        button.addEventListener(
-            "click",
-            () => {
-
+        button.addEventListener("click", () => {
                 currentPage = page;
-
                 render();
-
             }
         );
 
@@ -327,22 +194,12 @@ function renderPagination(totalPages) {
     }
 
 
-    const next =
-        document.createElement("button");
-
+    const next = document.createElement("button");
     next.textContent = "›";
-
-    next.disabled =
-        currentPage === totalPages;
-
-    next.addEventListener(
-        "click",
-        () => {
-
+    next.disabled = currentPage === totalPages;
+    next.addEventListener("click", () => {
             currentPage++;
-
             render();
-
         }
     );
 
@@ -356,22 +213,11 @@ function renderPagination(totalPages) {
 // ======================================================
 
 async function startService(name) {
-
-    if (
-        !confirm(
-            `Start service "${name}"?`
-        )
-    ) {
-
+    if (!confirm(`Start service "${name}"?`)) {
         return;
-
     }
 
-    await serviceAction(
-        name,
-        "start"
-    );
-
+    await serviceAction(name,"start");
 }
 
 
@@ -380,22 +226,11 @@ async function startService(name) {
 // ======================================================
 
 async function stopService(name) {
-
-    if (
-        !confirm(
-            `Stop service "${name}"?`
-        )
-    ) {
-
+    if (!confirm(`Stop service "${name}"?`)) {
         return;
-
     }
 
-    await serviceAction(
-        name,
-        "stop"
-    );
-
+    await serviceAction(name,"stop");
 }
 
 
@@ -404,22 +239,11 @@ async function stopService(name) {
 // ======================================================
 
 async function restartService(name) {
-
-    if (
-        !confirm(
-            `Restart service "${name}"?`
-        )
-    ) {
-
+    if (!confirm(`Restart service "${name}"?`)) {
         return;
-
     }
 
-    await serviceAction(
-        name,
-        "restart"
-    );
-
+    await serviceAction(name,"restart");
 }
 
 
@@ -427,23 +251,14 @@ async function restartService(name) {
 // SERVICE ACTION
 // ======================================================
 
-async function serviceAction(
-    name,
-    action
-) {
-
+async function serviceAction(name,action) {
     try {
-
-        showMessage(
-            `${action} ${name}...`
-        );
+        showMessage(`${action} ${name}...`);
 
         const response =
-            await fetch(
-                `/api/services/${encodeURIComponent(name)}/${action}`,
+            await fetch(`/api/services/${encodeURIComponent(name)}/${action}`,
                 {
                     method: "POST",
-
                     headers: {
                         Authorization:
                             "Bearer " + token
@@ -452,50 +267,26 @@ async function serviceAction(
             );
 
         if (response.status === 401) {
-
             localStorage.clear();
-
             window.location = "/";
-
             return;
-
         }
 
-        const result =
-            await response.json();
+        const result = await response.json();
 
         if (!response.ok) {
-
-            throw new Error(
-                result.message ||
-                `Failed to ${action} service`
-            );
-
+            throw new Error(result.message || `Failed to ${action} service`);
         }
 
-        showMessage(
-            `Service "${name}" ${action} successful.`
-        );
-
+        showMessage(`Service "${name}" ${action} successful.`);
         // Berikan waktu systemd
         // untuk memperbarui status.
-
-        setTimeout(
-            loadServices,
-            1000
-        );
+        setTimeout(loadServices,1000);
 
     } catch (error) {
-
         console.error(error);
-
-        showMessage(
-            error.message,
-            true
-        );
-
+        showMessage(error.message,true);
     }
-
 }
 
 
@@ -503,14 +294,15 @@ async function serviceAction(
 // SEARCH
 // ======================================================
 
-searchInput.addEventListener(
-    "input",
-    () => {
-
+searchInput.addEventListener("input",() => {
         currentPage = 1;
-
         render();
+    }
+);
 
+statusFilter.addEventListener("change",() => {
+        currentPage = 1;
+        render();
     }
 );
 
@@ -519,30 +311,17 @@ searchInput.addEventListener(
 // REFRESH
 // ======================================================
 
-refreshBtn.addEventListener(
-    "click",
-    loadServices
-);
+refreshBtn.addEventListener("click",loadServices);
 
 
 // ======================================================
 // MESSAGE
 // ======================================================
 
-function showMessage(
-    text,
-    error = false
-) {
-
+function showMessage(text,error = false) {
     message.textContent = text;
-
     message.style.display = "block";
-
-    message.className =
-        error
-            ? "message error"
-            : "message";
-
+    message.className = error ? "message error" : "message";
 }
 
 
@@ -551,7 +330,6 @@ function showMessage(
 // ======================================================
 
 function escapeHtml(value) {
-
     return String(value)
         .replaceAll("&", "&amp;")
         .replaceAll("<", "&lt;")
