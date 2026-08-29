@@ -1,6 +1,6 @@
 checkAuth();
 
-const MAX_POINTS = 10;
+const MAX_POINTS = 5;
 const cpuData = [];
 const memoryData = [];
 const rxData = [];
@@ -40,7 +40,7 @@ const cpuChart = new Chart(
                     display: false
                 },
                 border: {
-                    display: false
+                    display: true
                 }
             },
             y: {
@@ -50,7 +50,7 @@ const cpuChart = new Chart(
                     display: false
                 },
                 border: {
-                    display: false
+                    display: true
                 }
             }
         }
@@ -188,7 +188,11 @@ async function loadMetrics() {
 
     const data = await response.json();
 
-    const now = new Date().toLocaleTimeString();
+    const now = new Date().toLocaleTimeString('id-ID', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    });
 
     labels.push(now);
 
@@ -217,7 +221,7 @@ async function loadMetrics() {
         ${Math.floor(data.uptime.seconds / 86400)} Days`;
 }
 
-async function loadHardware(){
+async function loadHardware() {
     const response = await fetch("/api/hardware", {
         headers: {
             Authorization:
@@ -232,13 +236,16 @@ async function loadHardware(){
     }
 
     const data = await response.json();
-    
+
     console.log(data);
 
-    document.getElementById("cpu-info").innerHTML = `
-    <label>Model : </label><br>
-    <label>Cores : </label>${data.cpu.cores} Cores<br>
-    <label>Threads : </label>${data.cpu.threads} Threads`;
+    document.getElementById("hardware-info").innerHTML = `
+    <strong>Board : </strong>Product -> ${data.board.product}(${data.board.bios_vendor}), v=${data.board.bios_version} from ${data.board.manufacturer}<br>
+    <strong>CPU : </strong>${data.cpu.cores} Cores / ${data.cpu.threads} Threads<br>
+    <strong>Memory : </strong>${data.memory.total_gb} GB<br>
+    <strong>Network : </strong>(${data.network[0].name}: ${data.network[0].ipv4}; ${data.network[1].name}: ${data.network[1].ipv4} )<br>
+    <strong>Storage : </strong>${data.storage} GB<br>
+    <strong>System : </strong>${data.system.architecture} - host: ${data.system.hostname} kernel -> ${data.system.kernel}(${data.system.os})`;
 }
 
 loadMetrics();
