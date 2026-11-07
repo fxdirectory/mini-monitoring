@@ -5,7 +5,6 @@ class UserService:
     def get_users():
         users = []
         for user in pwd.getpwall():
-            # Skip system users (<1000) kecuali root
             if user.pw_uid < 1000 and user.pw_name != "root":
                 continue
             

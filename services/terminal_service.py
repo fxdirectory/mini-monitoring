@@ -17,12 +17,7 @@ def execute_command(command):
             "output": "Command not allowed"
         }
     try:
-        result = subprocess.run(
-            ALLOWED_COMMANDS[command],
-            capture_output=True,
-            text=True,
-            timeout=10
-        )
+        result = subprocess.run(ALLOWED_COMMANDS[command], capture_output=True, text=True, timeout=10)
         return {
             "success": True,
             "output": result.stdout

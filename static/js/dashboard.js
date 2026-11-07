@@ -172,14 +172,11 @@ const networkChart = new Chart(
 );
 
 async function loadMetrics() {
-
     const response = await fetch("/api/metrics", {
         headers: {
-            Authorization:
-                "Bearer " + token
+            Authorization: "Bearer " + token
         }
-    }
-    );
+    });
 
     if (response.status === 401) {
         localStorage.clear();
@@ -224,11 +221,9 @@ async function loadMetrics() {
 async function loadHardware() {
     const response = await fetch("/api/hardware", {
         headers: {
-            Authorization:
-                "Bearer " + token
+            Authorization: "Bearer " + token
         }
-    }
-    );
+    });
 
     if (response.status === 401) {
         localStorage.clear();

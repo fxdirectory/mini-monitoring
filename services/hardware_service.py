@@ -11,18 +11,18 @@ from utils.helpers import (
 
 def get_system_info():
     return {
-        "hostname": socket.gethostname(),
-        "os": platform.platform(),
-        "kernel": platform.release(),
-        "architecture": platform.machine()
+        "hostname"      : socket.gethostname(),
+        "os"            : platform.platform(),
+        "kernel"        : platform.release(),
+        "architecture"  : platform.machine()
     }
 
 def get_cpu_info():
     output = run_command(["lscpu"])
     cpu = {
-        "model": "",
-        "cores": psutil.cpu_count(logical=False),
-        "threads": psutil.cpu_count(logical=True)
+        "model"     : "",
+        "cores"     : psutil.cpu_count(logical=False),
+        "threads"   : psutil.cpu_count(logical=True)
     }
     if output:
         for line in output.splitlines():
@@ -32,9 +32,7 @@ def get_cpu_info():
 
 def get_memory_info():
     vm = psutil.virtual_memory()
-    return {
-        "total_gb": round(vm.total / (1024**3),2)
-    }
+    return {"total_gb": round(vm.total / (1024**3),2)}
 
 def get_board_info():
     return {

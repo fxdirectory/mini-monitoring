@@ -200,11 +200,9 @@ function renderCheckboxes(selected){
 
 async function loadUser(username){
     const response =
-        await fetch(
-            "/api/users/"+username,{
+        await fetch("/api/users/"+username,{
                 headers:{
-                    Authorization:
-                    "Bearer "+token}
+                    Authorization: "Bearer "+token}
         });
 
     const user = await response.json();
@@ -222,15 +220,8 @@ function closeUserModal(){
 
 const groups=[];
 
-document.querySelectorAll("#groupCheckboxes input:checked")
-.forEach(c=>{
+document.querySelectorAll("#groupCheckboxes input:checked").forEach(c=>{
     groups.push(c.value);
 });
 
-document.addEventListener("DOMContentLoaded",() => {
-    loadData();
-});
-
-function addUser(){
-    
-}
+document.addEventListener("DOMContentLoaded",() => {loadData();});

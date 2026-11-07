@@ -23,15 +23,11 @@ async function loadServices() {
     `;
 
     try {
-        const response = await fetch(
-            "/api/services",
-            {
+        const response = await fetch( "/api/services", {
                 headers: {
-                    Authorization:
-                        "Bearer " + token
+                    Authorization: "Bearer " + token
                 }
-            }
-        );
+            });
 
         if (response.status === 401) {
             localStorage.clear();
@@ -69,32 +65,17 @@ function getFilteredServices() {
         const status = statusFilter.value;
 
         return services.filter(service => {
-            // ==========================================
-            // STATUS FILTER
-            // ==========================================
-            if (
-                status !== "all" &&
-                service.status !== status
-            ) {
+            if (status !== "all" && service.status !== status) {
                 return false;
             }
-
-            // ==========================================
-            // SEARCH FILTER
-            // ==========================================
 
             if (!keyword) {
                 return true;
             }
             return service.name.toLowerCase().includes(keyword);
         });
-
 }
 
-
-// ======================================================
-// RENDER
-// ======================================================
 
 function render() {
     const filtered =getFilteredServices();
@@ -111,10 +92,6 @@ function render() {
     renderPagination(totalPages);
 }
 
-
-// ======================================================
-// TABLE
-// ======================================================
 
 function renderTable(items) {
     if (items.length === 0) {
@@ -152,11 +129,6 @@ function renderTable(items) {
         servicesTable.appendChild(row);
     });
 }
-
-
-// ======================================================
-// PAGINATION
-// ======================================================
 
 function renderPagination(totalPages) {
     pagination.innerHTML = "";
@@ -207,11 +179,6 @@ function renderPagination(totalPages) {
 
 }
 
-
-// ======================================================
-// START
-// ======================================================
-
 async function startService(name) {
     if (!confirm(`Start service "${name}"?`)) {
         return;
@@ -220,23 +187,12 @@ async function startService(name) {
     await serviceAction(name,"start");
 }
 
-
-// ======================================================
-// STOP
-// ======================================================
-
 async function stopService(name) {
     if (!confirm(`Stop service "${name}"?`)) {
         return;
     }
-
     await serviceAction(name,"stop");
 }
-
-
-// ======================================================
-// RESTART
-// ======================================================
 
 async function restartService(name) {
     if (!confirm(`Restart service "${name}"?`)) {
@@ -246,22 +202,13 @@ async function restartService(name) {
     await serviceAction(name,"restart");
 }
 
-
-// ======================================================
-// SERVICE ACTION
-// ======================================================
-
 async function serviceAction(name,action) {
     try {
         showMessage(`${action} ${name}...`);
-
-        const response =
-            await fetch(`/api/services/${encodeURIComponent(name)}/${action}`,
-                {
+        const response = await fetch(`/api/services/${encodeURIComponent(name)}/${action}`,{
                     method: "POST",
                     headers: {
-                        Authorization:
-                            "Bearer " + token
+                        Authorization: "Bearer " + token
                     }
                 }
             );
@@ -277,10 +224,7 @@ async function serviceAction(name,action) {
         if (!response.ok) {
             throw new Error(result.message || `Failed to ${action} service`);
         }
-
         showMessage(`Service "${name}" ${action} successful.`);
-        // Berikan waktu systemd
-        // untuk memperbarui status.
         setTimeout(loadServices,1000);
 
     } catch (error) {
@@ -288,11 +232,6 @@ async function serviceAction(name,action) {
         showMessage(error.message,true);
     }
 }
-
-
-// ======================================================
-// SEARCH
-// ======================================================
 
 searchInput.addEventListener("input",() => {
         currentPage = 1;
@@ -306,28 +245,13 @@ statusFilter.addEventListener("change",() => {
     }
 );
 
-
-// ======================================================
-// REFRESH
-// ======================================================
-
 refreshBtn.addEventListener("click",loadServices);
-
-
-// ======================================================
-// MESSAGE
-// ======================================================
 
 function showMessage(text,error = false) {
     message.textContent = text;
     message.style.display = "block";
     message.className = error ? "message error" : "message";
 }
-
-
-// ======================================================
-// HTML ESCAPE
-// ======================================================
 
 function escapeHtml(value) {
     return String(value)
@@ -338,11 +262,6 @@ function escapeHtml(value) {
         .replaceAll("'", "&#039;");
 
 }
-
-
-// ======================================================
-// INIT
-// ======================================================
 
 document.addEventListener(
     "DOMContentLoaded",
