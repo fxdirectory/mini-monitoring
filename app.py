@@ -1,6 +1,8 @@
 # import eventlet
 # eventlet.monkey_patch()
 
+import os
+
 from flask import Flask
 from flask_cors import CORS
 
@@ -72,9 +74,17 @@ def terminal_page():
     return render_template("terminal.html")
 
 if __name__ == "__main__":
+    host = "0.0.0.0"
+    if os.name == "nt":
+        app.config["WINDOWS_DEV_LOGIN"] = os.getenv(
+            "WINDOWS_DEV_LOGIN",
+            "1"
+        ).lower() in {"1", "true", "yes", "on"}
+        host = "127.0.0.1"
+
     socketio.run(
         app,
-        host="0.0.0.0",
+        host=host,
         port=5000,
         debug=True
     )

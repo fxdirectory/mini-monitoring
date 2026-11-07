@@ -8,54 +8,52 @@ Dashboard
 
 <div id="metrics">
     <h2 class="title-page">System Monitoring</h2>
-    <div class="metrics">
-        <div class="card">
-            <h3>CPU Usage</h3>
-            <canvas class="chart-container" id="cpuChart"></canvas>
+    <div class="task-manager-metrics">
+        <div class="classic-meters">
+            <section class="classic-meter">
+                <h3>CPU Usage</h3>
+                <div class="classic-meter-screen">
+                    <div class="classic-gauge" id="cpuGauge" role="meter" aria-label="CPU usage" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+                    <span id="cpuValue">0%</span>
+                </div>
+            </section>
+            <section class="classic-meter">
+                <h3>Memory Usage</h3>
+                <div class="classic-meter-screen">
+                    <div class="classic-gauge" id="memoryGauge" role="meter" aria-label="Memory usage" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+                    <span id="memoryValue">0 MB</span>
+                </div>
+            </section>
         </div>
-        <div class="card">
-            <h3>Memory Usage</h3>
-            <canvas class="chart-container" id="memoryChart"></canvas>
-        </div>
-        <div class="card">
+        <section class="classic-network">
             <h3>Network Traffic</h3>
-            <canvas class="chart-container" id="networkChart"></canvas>
-        </div>
+            <div class="classic-network-screen">
+                <canvas id="networkChart" aria-label="Network traffic history"></canvas>
+            </div>
+            <div class="network-legend">
+                <span class="network-receive">Receive <strong id="rxValue">0 KB/s</strong></span>
+                <span class="network-send">Send <strong id="txValue">0 KB/s</strong></span>
+            </div>
+        </section>
     </div>
     <div class="card-row">
         <div class="card small">
-            <h3>Storage</h3>
-            <div id="storageInfo">
+            <h3 class="title-page">Storage</h3>
+            <div id="storageInfo" class="text-default">
                 Loading...
             </div>
         </div>
         <div class="card small">
-            <h3>Uptime</h3>
-            <div id="uptimeInfo">
+            <h3 class="title-page">Uptime</h3>
+            <div id="uptimeInfo" class="text-default">
                 Loading...
             </div>
         </div>
     </div>
 </div>
-<div class="card" id="hardware-info">
-    <h3>System Information</h3>
-    <div id="hardware-info">Loading...</div>
-    <h5>CPU info</h5>
-    <div class="card">
-        <div id="cpu-info"></div>
-    </div>
-    <div class="card">
-        <h5>Memory info</h5>
-        <div id="cpu-info"></div>
-    </div>
-    <div class="card">
-        <h5>Storage info</h5>
-        <div id="cpu-info"></div>
-    </div>
-    <div class="card">
-        <h5>Network info</h5>
-        <div id="cpu-info"></div>
-    </div>
+<div class="card" id="hardware-card">
+    <h3 class="title-page">System Information</h3>
+    <div id="hardware-info" class="text-default">Loading...</div>
 </div>
 {% endblock %}
 

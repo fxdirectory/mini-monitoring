@@ -35,7 +35,10 @@ def get_metrics():
     disk = psutil.disk_usage("/")
     net = psutil.net_io_counters()
     boot_time = psutil.boot_time()
-    load1, load5, load15 = os.getloadavg()
+    if hasattr(os, "getloadavg"):
+        load1, load5, load15 = os.getloadavg()
+    else:
+        load1 = load5 = load15 = None
     uptime_seconds = int(time.time() - boot_time)
 
     return {

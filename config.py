@@ -7,3 +7,4 @@ class Config:
     )
 
     JWT_EXPIRE_HOURS = 8
+    WINDOWS_DEV_LOGIN = False

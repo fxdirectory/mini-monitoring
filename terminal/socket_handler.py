@@ -1,6 +1,5 @@
 from flask import request
 import threading
-import grp
 from terminal.terminal_manager import (
     get_session, remove_session
 )
@@ -100,6 +99,8 @@ def register_terminal_events(socketio, app):
 
 def is_terminal_admin(username):
     try:
+        import grp
+
         group = grp.getgrnam("monitor-admin")
         return (
             username

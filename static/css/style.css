@@ -40,7 +40,6 @@ input {
     width: 100%;
     margin-bottom: 10px;
     padding: 8px;
-    box-sizing: border-box;
     border-top: 1px solid #999;
     border-left: 1px solid #999;
     border-bottom: 1px solid #fff;
@@ -185,27 +184,6 @@ button {
     width: 100%;
     flex: 1;
     gap: 3px;
-    /* allow layout to grow so sidebar can stretch full height */
-}
-
-.sidebar {
-    background: #edffff;
-    padding: 0 5px;
-    width: 15%;
-    vertical-align: top;
-    height: 100%;
-}
-
-.sidebar a {
-    display: block;
-    padding: 10px;
-    color: black;
-    text-decoration: none;
-    font-size: 1rem;
-}
-
-.sidebar a:hover {
-    background: #ddd;
 }
 
 .content {
@@ -220,10 +198,148 @@ button {
     grid-template-columns: repeat(3, 1fr);
 }
 
+.task-manager-metrics {
+    display: grid;
+    grid-template-columns: minmax(240px, 0.9fr) minmax(0, 2.4fr);
+    align-items: stretch;
+    gap: 16px;
+    margin-bottom: 20px;
+    padding: 12px;
+    background: #d4d0c7;
+    border-top: 2px solid #fff;
+    border-left: 2px solid #fff;
+    border-right: 2px solid #777;
+    border-bottom: 2px solid #777;
+    box-shadow: inset 1px 1px 0 #f4f2ed, inset -1px -1px 0 #aaa69d;
+    font-family: Tahoma, Verdana, sans-serif;
+}
+
+.classic-meters {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-content: start;
+    justify-items: center;
+    gap: 12px;
+}
+
+.classic-meter,
+.classic-network {
+    min-width: 0;
+}
+
+.classic-meter {
+    width: 112px;
+    max-width: 100%;
+}
+
+.classic-meter h3,
+.classic-network h3 {
+    min-height: 18px;
+    margin: 0 0 6px;
+    color: #111;
+    font-size: 0.8rem;
+    font-weight: 400;
+    line-height: 18px;
+    white-space: nowrap;
+}
+
+.classic-meter-screen {
+    width: 100%;
+    padding: 6px;
+    border: 2px groove #fff;
+    background: #d4d0c7;
+    box-shadow: inset 1px 1px 2px #888;
+}
+
+.classic-meter-screen .classic-gauge {
+    display: grid;
+    grid-template-rows: repeat(10, 1fr);
+    gap: 2px;
+    width: 100%;
+    height: 58px;
+    background: #000;
+}
+
+.classic-gauge span {
+    display: block;
+    width: 100%;
+    background: #00310d;
+}
+
+.classic-gauge span.active {
+    background: #00ff36;
+    box-shadow: 0 0 3px #00ff36;
+}
+
+.classic-meter-screen > span {
+    display: block;
+    min-height: 19px;
+    padding-top: 2px;
+    overflow: hidden;
+    color: #00ff36;
+    background: #000;
+    font-family: "Lucida Console", Consolas, monospace;
+    font-size: 0.72rem;
+    line-height: 17px;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.classic-network {
+    display: flex;
+    flex-direction: column;
+}
+
+.classic-network-screen {
+    height: 112px;
+    padding: 4px;
+    border: 2px groove #fff;
+    background: #000;
+    box-shadow: inset 1px 1px 2px #888;
+}
+
+.classic-network-screen canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: #000;
+}
+
+.network-legend {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 6px 2px 0;
+    font-family: "Lucida Console", Consolas, monospace;
+    font-size: 0.7rem;
+}
+
+.network-receive {
+    color: #008c24;
+}
+
+.network-send {
+    color: #c62828;
+}
+
 .card {
-    background: white;
-    border: 1px solid #999;
-    padding: 5px;
+    margin-bottom: 20px;
+    padding: 12px;
+    background: #d4d0c7;
+    border-top: 2px solid #fff;
+    border-left: 2px solid #fff;
+    border-right: 2px solid #777;
+    border-bottom: 2px solid #777;
+    box-shadow: inset 1px 1px 0 #f4f2ed, inset -1px -1px 0 #aaa69d;
+    font-family: Tahoma, Verdana, sans-serif;
+    padding: 10px 10px;
+}
+
+.text-default{
+    font-family: Tahoma, Verdana, sans-serif;
+    font-size: 0.8rem;
+    font-weight: 400;
 }
 
 .card-row {
@@ -297,7 +413,7 @@ button {
 
 .table th,
 .table td {
-    border: 1px solid #ddd;
+    border: 1px solid #1a1a1a;
     padding: 10px;
     font-size: 0.8rem;
 }
@@ -357,18 +473,6 @@ button {
     padding: 10px;
 }
 
-modal-body label {
-    font-weight: bold;
-}
-
-modal-body input[type="text"],
-modal-body input[type="password"] {
-    width: 100%;
-    padding: 2px !important;
-    font-size: 0.8rem !important;
-    border: 1px solid #ccc;
-}
-
 .modal-footer {
     display: flex;
     justify-content: flex-end;
@@ -411,30 +515,8 @@ modal-body input[type="password"] {
     color: #777;
 }
 
-.service-toolbar input {
-    width: 300px;
-    padding: 9px 12px;
-    border: 1px solid #ccc;
-}
-
 .table-container {
     overflow-x: auto;
-}
-
-.service-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.service-table th,
-.service-table td {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-    text-align: left;
-}
-
-.service-table th {
-    background: #f5f5f5;
 }
 
 .status {
@@ -515,6 +597,25 @@ modal-body input[type="password"] {
     background: white;
 }
 
+@media (max-width: 767px) {
+    .task-manager-metrics {
+        grid-template-columns: 1fr;
+    }
+
+    .classic-meters {
+        grid-template-columns: repeat(2, minmax(112px, 1fr));
+        justify-items: start;
+    }
+
+    .classic-meter {
+        width: 112px;
+    }
+
+    .classic-network-screen {
+        height: 140px;
+    }
+}
+
 @media (min-width: 1200px) {
 
     .window {
@@ -552,12 +653,6 @@ modal-body input[type="password"] {
 
     .content {
         padding: 0 15px;
-    }
-
-    .card-row {
-        display: flex;
-        flex-direction: row;
-        gap: 10px;
     }
 
     .card {
@@ -604,22 +699,14 @@ modal-body input[type="password"] {
     }
 
     .card-row {
-        display: flex;
         flex-wrap: wrap;
-        gap: 10px;
     }
 
     .small {
         min-width: calc(50% - 5px);
     }
 
-    .table-container {
-        width: 100%;
-        overflow-x: auto;
-    }
-
-    .table,
-    .service-table {
+    .table {
         min-width: 700px;
     }
 
@@ -651,18 +738,6 @@ modal-body input[type="password"] {
 
     .layout {
         flex-direction: column;
-    }
-
-    .sidebar {
-        width: 100%;
-        height: auto;
-        padding: 0;
-    }
-
-    .sidebar a {
-        display: inline-block;
-        padding: 7px 10px;
-        font-size: 0.85rem;
     }
 
     .content {
@@ -725,27 +800,12 @@ modal-body input[type="password"] {
         flex-direction: column;
     }
 
-    .sidebar {
-        width: 100%;
-        height: auto;
-        padding: 0;
-        overflow-x: auto;
-        white-space: nowrap;
-    }
-
-    .sidebar a {
-        display: inline-block;
-        padding: 7px 8px;
-        font-size: 0.75rem;
-    }
-
     .content {
         padding: 0 6px;
     }
 
     .card-row {
         flex-direction: column;
-        gap: 10px;
     }
 
     .small {
@@ -778,12 +838,7 @@ modal-body input[type="password"] {
         width: 100%;
     }
 
-    .table-container {
-        overflow-x: auto;
-    }
-
-    .table,
-    .service-table {
+    .table {
         min-width: 650px;
     }
 
@@ -871,26 +926,6 @@ modal-body input[type="password"] {
 
 
     /* ==============================================
-       SIDEBAR
-       ============================================== */
-
-    .sidebar {
-        width: 100%;
-        height: auto;
-        padding: 0;
-
-        overflow-x: auto;
-        white-space: nowrap;
-    }
-
-    .sidebar a {
-        display: inline-block;
-        padding: 7px;
-        font-size: 0.75rem;
-    }
-
-
-    /* ==============================================
        CONTENT
        ============================================== */
 
@@ -907,8 +942,6 @@ modal-body input[type="password"] {
     .card {
         width: 100%;
         max-width: 100%;
-        background: white;
-        border: 1px solid #999;
         margin: 15px 0;
         padding: 15px;
     }
@@ -945,15 +978,12 @@ modal-body input[type="password"] {
         -webkit-overflow-scrolling: touch;
     }
 
-    .table,
-    .service-table {
+    .table {
         min-width: 650px;
     }
 
     .table th,
-    .table td,
-    .service-table th,
-    .service-table td {
+    .table td {
         padding: 7px;
         font-size: 0.7rem;
     }
@@ -1096,12 +1126,29 @@ modal-body input[type="password"] {
 
     .metrics {
         display: block;
-        gap: 20px;
     }
 
-    .chart-container {
-    background: #ffffff;
-    width: auto;
-}
+    .task-manager-metrics {
+        gap: 14px;
+        padding: 9px;
+    }
+
+    .classic-meter {
+        width: 104px;
+    }
+
+    .classic-meters {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        justify-items: center;
+        gap: 8px;
+    }
+
+    .classic-meter-screen .classic-gauge {
+        height: 50px;
+    }
+
+    .classic-network-screen {
+        height: 110px;
+    }
 
 }

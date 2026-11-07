@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fx-directory server | Login</title>
+    <title>fx-directory server | -></title>
     <link rel="stylesheet" href="/static/css/style.css">
     <link rel="icon" href="static/images/logo.ico" type="image/x-icon">
 </head>
@@ -12,13 +12,15 @@
 <body>
     <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
         <div class="login-box border-default">
-            <h2 style="text-align: center;">riddle me this!</h2>
-            <div id="message"></div>
-            <input type="text" id="username" placeholder="Who!">
-            <input type="password" id="password" placeholder="Code!">
-            <div style="display: flex; justify-content: center;">
-                <button type="submit" class="btn" onclick="login()" onsubmit="login()">Sure!</button>
-            </div>
+            <form action="" onsubmit="login(); return false;">
+                <h2 style="text-align: center;">riddle me this!</h2>
+                <div id="message" style="color:red; text-align:center; margin-bottom: 10px;"></div>
+                <input type="text" id="username" placeholder="Who!" autofocus>
+                <input type="password" id="password" placeholder="Code!">
+                <div style="display: flex; justify-content: center;">
+                    <button type="submit" class="btn" onclick="login()" onsubmit="login()">Sure!</button>
+                </div>
+            </form>
         </div>
     </div>
     <script src="/static/js/auth.js"></script>

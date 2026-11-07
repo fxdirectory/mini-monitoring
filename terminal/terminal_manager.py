@@ -1,6 +1,4 @@
 import os
-import pty
-import pwd
 
 class TerminalSession:
     
@@ -10,6 +8,12 @@ class TerminalSession:
         self.create_shell()
 
     def create_shell(self):
+        if os.name == "nt":
+            raise OSError("Terminal access is only available on Linux.")
+
+        import pty
+        import pwd
+
         pid, fd = pty.fork()
         if pid == 0:
             try:

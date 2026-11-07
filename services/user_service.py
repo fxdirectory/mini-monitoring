@@ -1,8 +1,8 @@
-import pwd
-import grp
-
 class UserService:
     def get_users():
+        import grp
+        import pwd
+
         users = []
         for user in pwd.getpwall():
             if user.pw_uid < 1000 and user.pw_name != "root":
@@ -27,6 +27,9 @@ class UserService:
         return users
 
     def get_user(username):
+        import grp
+        import pwd
+
         try:
             user = pwd.getpwnam(username)
             groups = []
@@ -48,6 +51,8 @@ class UserService:
             return None
         
     def get_groups():
+        import grp
+
         groups = []
         for group in grp.getgrall():
             groups.append({
@@ -59,6 +64,8 @@ class UserService:
         return groups
 
     def get_group(name):
+        import grp
+
         try:
             group = grp.getgrnam(name)
             return {

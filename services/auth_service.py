@@ -1,10 +1,15 @@
-import pam
-import pwd
-import grp
+import os
 
 MONITOR_GROUP = "monitor-admin"
 
 def authenticate_user(username, password):
+    if os.name == "nt":
+        return False
+
+    import grp
+    import pam
+    import pwd
+
     p = pam.pam()
     if not p.authenticate(username, password):
         return False

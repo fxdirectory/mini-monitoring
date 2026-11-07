@@ -1,136 +1,45 @@
 checkAuth();
 
-const MAX_POINTS = 5;
-const cpuData = [];
-const memoryData = [];
+const MAX_POINTS = 60;
 const rxData = [];
 const txData = [];
-const labels = [];
+const networkLabels = [];
 
-const cpuChart = new Chart(
-    document.getElementById("cpuChart"), {
-    type: "line",
-    data: {
-        labels: labels,
-        datasets: [{
-            label: "CPU %",
-            data: cpuData,
-            fill: false,
-            borderColor: '#00000',
-            tension: 0,
-            borderWith: 1,
-            pointRadius: 0,
-        }]
-    },
-    options: {
-        animation: false,
-        responsive: true,
-        plugins: {
-            legend: {
-                display: true,
-                labels: {
-                    usePointStyle: true,
-                    pointStyle: 'circle'
-                }
-            }
-        },
-        scales: {
-            x: {
-                grid: {
-                    display: false
-                },
-                border: {
-                    display: true
-                }
-            },
-            y: {
-                min: 0,
-                max: 100,
-                grid: {
-                    display: false
-                },
-                border: {
-                    display: true
-                }
-            }
-        }
-    }
+function updateGauge(gauge, value) {
+    const level = Math.max(0, Math.min(100, value));
+    const activeSegments = Math.round(level / 10);
+    gauge.setAttribute("aria-valuenow", String(Math.round(level)));
+
+    [...gauge.children].forEach((segment, index) => {
+        segment.classList.toggle("active", index >= gauge.children.length - activeSegments);
+    });
 }
-);
 
-const memoryChart = new Chart(
-    document.getElementById("memoryChart"), {
-    type: "line",
-    data: {
-        labels: labels,
-        datasets: [{
-            label: "Memory %",
-            data: memoryData,
-            fill: false,
-            borderColor: '#00000',
-            tension: 0,
-            borderWith: 1,
-            pointRadius: 0,
-        }]
-    },
-    options: {
-        animation: false,
-        responsive: true,
-        plugins: {
-            legend: {
-                display: true,
-                labels: {
-                    usePointStyle: true,
-                    pointStyle: 'circle'
-                }
-            }
-        },
-        scales: {
-            x: {
-                grid: {
-                    display: false
-                },
-                border: {
-                    display: false
-                }
-            },
-            y: {
-                min: 0,
-                max: 100,
-                grid: {
-                    display: false
-                },
-                border: {
-                    display: false
-                }
-            }
-        }
+document.querySelectorAll(".classic-gauge").forEach(gauge => {
+    for (let index = 0; index < 10; index += 1) {
+        gauge.appendChild(document.createElement("span"));
     }
-}
-);
+});
 
-const networkChart = new Chart(
-    document.getElementById("networkChart"), {
+const networkChart = new Chart(document.getElementById("networkChart"), {
     type: "line",
     data: {
-        labels: labels,
+        labels: networkLabels,
         datasets: [
             {
-                label: "RX KB/s",
+                label: "Receive",
                 data: rxData,
                 fill: false,
-                borderColor: '#00000',
-                tension: 0,
-                borderWith: 1,
+                borderColor: "#00ff36",
+                borderWidth: 1,
                 pointRadius: 0,
             },
             {
-                label: "TX KB/s",
+                label: "Send",
                 data: txData,
                 fill: false,
-                borderColor: 'red',
-                tension: 0,
-                borderWith: 1,
+                borderColor: "#ff3030",
+                borderWidth: 1,
                 pointRadius: 0,
             }
         ],
@@ -138,38 +47,51 @@ const networkChart = new Chart(
     options: {
         animation: false,
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
             legend: {
-                display: true,
-                labels: {
-                    usePointStyle: true,
-                    pointStyle: 'circle'
-                }
+                display: false
             }
         },
         scales: {
             x: {
+                ticks: { display: false },
                 grid: {
-                    display: false
+                    color: "#006b28",
+                    lineWidth: 0.6,
+                    drawTicks: false
                 },
-                border: {
-                    display: false
-                }
+                border: { display: false }
             },
             y: {
                 min: 0,
-                max: 100,
+                max: 10,
+                ticks: { display: false },
                 grid: {
-                    display: false
+                    color: "#006b28",
+                    lineWidth: 0.6,
+                    drawTicks: false
                 },
-                border: {
-                    display: false
-                }
+                border: { display: false }
             }
         }
     }
+});
+
+function formatNetworkRate(value) {
+    return value >= 1024
+        ? `${(value / 1024).toFixed(2)} MB/s`
+        : `${value.toFixed(1)} KB/s`;
 }
-);
+
+function formatMemoryUsage(used, total) {
+    const usedMb = used * 1024;
+    const totalMb = total * 1024;
+    const label = usedMb >= 1024
+        ? `${(usedMb / 1024).toFixed(2)} GB`
+        : `${Math.round(usedMb)} MB`;
+    return { label, title: `${used.toFixed(2)} GB of ${total.toFixed(2)} GB` };
+}
 
 async function loadMetrics() {
     const response = await fetch("/api/metrics", {
@@ -181,33 +103,41 @@ async function loadMetrics() {
     if (response.status === 401) {
         localStorage.clear();
         window.location = "/";
+        return;
     }
 
     const data = await response.json();
+    const rx = Math.max(0, data.network.rx_kbps);
+    const tx = Math.max(0, data.network.tx_kbps);
 
-    const now = new Date().toLocaleTimeString('id-ID', {
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit'
-    });
-
-    labels.push(now);
-
-    cpuData.push(data.cpu.usage_percent);
-    memoryData.push(data.memory.percent);
-    rxData.push(data.network.rx_kbps);
-    txData.push(data.network.tx_kbps);
-    if (labels.length > MAX_POINTS) {
-        labels.shift();
-        cpuData.shift();
-        memoryData.shift();
+    rxData.push(rx);
+    txData.push(tx);
+    networkLabels.push("");
+    if (networkLabels.length > MAX_POINTS) {
         rxData.shift();
         txData.shift();
+        networkLabels.shift();
     }
 
-    cpuChart.update();
-    memoryChart.update();
-    networkChart.update();
+    updateGauge(document.getElementById("cpuGauge"), data.cpu.usage_percent);
+    updateGauge(document.getElementById("memoryGauge"), data.memory.percent);
+    document.getElementById("cpuValue").textContent =
+        `${Math.round(data.cpu.usage_percent)}%`;
+
+    const memory = formatMemoryUsage(data.memory.used, data.memory.total);
+    const memoryValue = document.getElementById("memoryValue");
+    memoryValue.textContent = memory.label;
+    memoryValue.title = memory.title;
+
+    document.getElementById("rxValue").textContent = formatNetworkRate(rx);
+    document.getElementById("txValue").textContent = formatNetworkRate(tx);
+
+    const largestRate = Math.max(...rxData, ...txData);
+    networkChart.options.scales.y.max = Math.max(
+        10,
+        Math.ceil(largestRate / 10) * 10
+    );
+    networkChart.update("none");
 
     document.getElementById("storageInfo").innerHTML = `
         ${data.disk.used}/${data.disk.total} GB
@@ -228,11 +158,10 @@ async function loadHardware() {
     if (response.status === 401) {
         localStorage.clear();
         window.location = "/";
+        return;
     }
 
     const data = await response.json();
-
-    console.log(data);
 
     document.getElementById("hardware-info").innerHTML = `
     <strong>Board : </strong>Product -> ${data.board.product}(${data.board.bios_vendor}), v=${data.board.bios_version} from ${data.board.manufacturer}<br>
